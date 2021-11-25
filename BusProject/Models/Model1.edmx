@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="thebusModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bus">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Bus" Type="varchar" MaxLength="50" />
+          <Property Name="Destination" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'thebus.dbo.thestudents' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="thestudents">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="Student_number" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Student_number" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Surname" Type="varchar" MaxLength="50" />
+          <Property Name="Campus" Type="varchar" MaxLength="50" />
+          <Property Name="Department" Type="varchar" MaxLength="50" />
+          <Property Name="Desired_bus" Type="int" />
+          <Property Name="Desired_time" Type="int" />
+        </EntityType>
+        <EntityType Name="times">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="time" Type="datetime" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="50" />
+          <Property Name="password" Type="varchar" MaxLength="50" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="surname" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_thestudents_Bus">
+          <End Role="Bus" Type="Self.Bus" Multiplicity="0..1" />
+          <End Role="thestudents" Type="Self.thestudents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bus">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="thestudents">
+              <PropertyRef Name="Desired_bus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_thestudents_times1">
+          <End Role="times" Type="Self.times" Multiplicity="0..1" />
+          <End Role="thestudents" Type="Self.thestudents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="times">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="thestudents">
+              <PropertyRef Name="Desired_time" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="thebusModelStoreContainer">
+          <EntitySet Name="Bus" EntityType="Self.Bus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="times" EntityType="Self.times" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="thestudents" EntityType="Self.thestudents" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [thestudents].[id] AS [id], 
+    [thestudents].[Student_number] AS [Student_number], 
+    [thestudents].[Name] AS [Name], 
+    [thestudents].[Surname] AS [Surname], 
+    [thestudents].[Campus] AS [Campus], 
+    [thestudents].[Department] AS [Department], 
+    [thestudents].[Desired_bus] AS [Desired_bus], 
+    [thestudents].[Desired_time] AS [Desired_time]
+    FROM [dbo].[thestudents] AS [thestudents]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_thestudents_Bus" Association="Self.FK_thestudents_Bus">
+            <End Role="Bus" EntitySet="Bus" />
+            <End Role="thestudents" EntitySet="thestudents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_thestudents_times1" Association="Self.FK_thestudents_times1">
+            <End Role="times" EntitySet="times" />
+            <End Role="thestudents" EntitySet="thestudents" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="thebusModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Bus">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Bus1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Destination" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="thestudents" Relationship="Self.FK_thestudents_Bus" FromRole="Bus" ToRole="thestudents" />
+        </EntityType>
+        <EntityType Name="time">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="time1" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="thestudents" Relationship="Self.FK_thestudents_times1" FromRole="times" ToRole="thestudents" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="surname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="thestudent">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="Student_number" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Student_number" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Campus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Department" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Desired_bus" Type="Int32" />
+          <Property Name="Desired_time" Type="Int32" />
+          <NavigationProperty Name="Bus" Relationship="Self.FK_thestudents_Bus" FromRole="thestudents" ToRole="Bus" />
+          <NavigationProperty Name="time" Relationship="Self.FK_thestudents_times1" FromRole="thestudents" ToRole="times" />
+        </EntityType>
+        <Association Name="FK_thestudents_Bus">
+          <End Role="Bus" Type="Self.Bus" Multiplicity="0..1" />
+          <End Role="thestudents" Type="Self.thestudent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bus">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="thestudents">
+              <PropertyRef Name="Desired_bus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_thestudents_times1">
+          <End Role="times" Type="Self.time" Multiplicity="0..1" />
+          <End Role="thestudents" Type="Self.thestudent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="times">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="thestudents">
+              <PropertyRef Name="Desired_time" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="thebusEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Buses" EntityType="Self.Bus" />
+          <EntitySet Name="times" EntityType="Self.time" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <EntitySet Name="thestudents" EntityType="Self.thestudent" />
+          <AssociationSet Name="FK_thestudents_Bus" Association="Self.FK_thestudents_Bus">
+            <End Role="Bus" EntitySet="Buses" />
+            <End Role="thestudents" EntitySet="thestudents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_thestudents_times1" Association="Self.FK_thestudents_times1">
+            <End Role="times" EntitySet="times" />
+            <End Role="thestudents" EntitySet="thestudents" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="thebusModelStoreContainer" CdmEntityContainer="thebusEntities">
+          <EntitySetMapping Name="Buses">
+            <EntityTypeMapping TypeName="thebusModel.Bus">
+              <MappingFragment StoreEntitySet="Bus">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Bus1" ColumnName="Bus" />
+                <ScalarProperty Name="Destination" ColumnName="Destination" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="times">
+            <EntityTypeMapping TypeName="thebusModel.time">
+              <MappingFragment StoreEntitySet="times">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="time1" ColumnName="time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="thebusModel.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="surname" ColumnName="surname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="thestudents">
+            <EntityTypeMapping TypeName="thebusModel.thestudent">
+              <MappingFragment StoreEntitySet="thestudents">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Student_number" ColumnName="Student_number" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Campus" ColumnName="Campus" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Desired_bus" ColumnName="Desired_bus" />
+                <ScalarProperty Name="Desired_time" ColumnName="Desired_time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
